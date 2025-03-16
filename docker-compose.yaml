@@ -1,0 +1,46 @@
+version: '3.6'
+
+services:
+  keycloak_web:
+    image: quay.io/keycloak/keycloak:26.1.2
+    container_name: keycloak_web
+    environment:
+      KC_HOSTNAME: localhost
+      KC_LOG_LEVEL: info
+      KC_METRICS_ENABLED: true
+      KC_HEALTH_ENABLED: true
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-export.json
+#      KC_UPLOAD_SCRIPTS: "true"
+#    command: start-dev --import-realm
+    command: start-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src/main/resources/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+
+  backend:
+    build: .
+    ports:
+      - "8081:8081"
+    depends_on:
+      - keycloak_web
+      - backenddb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://backenddb:5432/postgres
+
+  backenddb:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - backend_data:/var/lib/postgresql/data
+    environment:
+
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
+volumes:
+  backend_data:
