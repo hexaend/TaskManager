@@ -43,8 +43,6 @@
 - Keycloak
 - Docker
 - PostgreSQL
-- Oauth2ResourceServer
-
 ## Идея для улучшения
 - Написать тесты
 - Написать фронтенд
