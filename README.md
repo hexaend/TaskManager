@@ -32,7 +32,7 @@
 Также есть документация Swagger по адресу: [http://localhost:8081/swagger-ui/index.html](http://localhost:8081/swagger-ui/index.html)
 
 ## Стек приложения
-- Java 23
+- Java 42
 - Spring Boot
 - Spring Security
 - Spring Data JPA
